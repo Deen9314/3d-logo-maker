@@ -5,38 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D GIF Maker Pro - ZZ Soft</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gifshot@0.4.5/dist/gifshot.min.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gifshot/0.4.5/gifshot.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #059669; --bg: #0b1120; --card-bg: #f8fafc; --text-dark: #1e293b; }
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: white; overflow-x: hidden; }
-        header { text-align: center; padding: 30px 0 10px; }
-        header h1 { font-size: 40px; margin: 0; font-weight: 400; color: #fff; }
-        .main-tool-card {
-            max-width: 1250px; margin: 20px auto; background: #fff; border-radius: 15px;
-            display: grid; grid-template-columns: 360px 1fr 340px; gap: 20px; padding: 25px;
-            color: var(--text-dark); box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-        }
-        .col-preview { display: flex; flex-direction: column; align-items: center; border-right: 1px solid #eee; padding-right: 15px; }
-        #canvas-box { width: 320px; height: 320px; background: #fff; border: 1px solid #ddd; background-image: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f0f0f0 75%), linear-gradient(-45deg, transparent 75%, #f0f0f0 75%); background-size: 20px 20px; }
-        .btn-upload-main { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 18px; }
-        .col-list { display: flex; flex-direction: column; }
-        .anim-box { height: 380px; overflow-y: auto; border: 1px solid #ddd; background: white; border-radius: 6px; margin-top: 5px; }
-        .anim-item { padding: 12px 15px; border-bottom: 1px solid #f1f5f9; cursor: pointer; font-size: 14px; color: #444; }
-        .anim-item.active { background: #e2e8f0; font-weight: bold; color: #059669; border-left: 5px solid #059669; }
-        .btn-scroll { background: #1e3a8a; color: white; border: none; padding: 12px; border-radius: 8px; margin-top: 15px; cursor: pointer; font-weight: bold; width: 100%; }
-        .col-custom { display: flex; flex-direction: column; gap: 18px; padding-left: 15px; border-left: 1px solid #eee; }
-        .control-group { display: flex; flex-direction: column; }
-        .control-group label { font-weight: bold; font-size: 14px; margin-bottom: 5px; color: #333; }
-        input[type="range"] { width: 100%; cursor: pointer; accent-color: #059669; }
-        .cube-section { background: #f1f5f9; padding: 12px; border-radius: 10px; border: 1px solid #cbd5e1; margin-top: 5px; }
-        .sides-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 10px; }
-        .side-tab { background: #fff; border: 1px solid #ddd; padding: 10px 2px; font-size: 11px; text-align: center; cursor: pointer; border-radius: 5px; font-weight: bold; color: #555; }
-        .bottom-area { max-width: 1100px; margin: 60px auto; text-align: center; }
-        .btn-final-download { background: #27ae60; color: white; border: none; padding: 22px 90px; font-size: 26px; font-weight: bold; border-radius: 12px; cursor: pointer; margin-bottom: 80px; box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
+        :root { --primary: #059669; --bg: #0b1120; --text-dark: #1e293b; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: white; overflow-x: hidden; text-align: center; }
+        .main-tool-card { max-width: 1200px; margin: 20px auto; background: #fff; border-radius: 15px; display: grid; grid-template-columns: 350px 1fr 300px; gap: 20px; padding: 20px; color: var(--text-dark); }
+        #canvas-box { width: 300px; height: 300px; background: #eee; border: 1px solid #ddd; margin: 0 auto; }
+        .btn-upload-main { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .anim-box { height: 300px; overflow-y: auto; border: 1px solid #ddd; background: white; border-radius: 6px; }
+        .anim-item { padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; text-align: left; color: #333; }
+        .anim-item.active { background: #e2e8f0; color: #059669; font-weight: bold; border-left: 5px solid #059669; }
+        .btn-final-download { background: #27ae60; color: white; border: none; padding: 20px 60px; font-size: 22px; font-weight: bold; border-radius: 10px; cursor: pointer; margin: 40px 0; }
         .btn-final-download:disabled { background: #95a5a6; cursor: wait; }
-        @media (max-width: 950px) { .main-tool-card { grid-template-columns: 1fr; } }
+        @media (max-width: 900px) { .main-tool-card { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -47,121 +29,72 @@
     <div class="col-preview">
         <div id="canvas-box"></div>
         <input type="file" id="imageInput" hidden accept="image/*">
-        <button class="btn-upload-main" onclick="triggerMainUpload()">Upload Image</button>
-        <div style="margin-top:15px; font-size:13px; color:#666;">
-            <input type="checkbox" id="transCheck" checked> Transparent Background
-        </div>
+        <button class="btn-upload-main" onclick="document.getElementById('imageInput').click()">Upload Image</button>
     </div>
 
     <div class="col-list">
-        <div style="font-weight:bold;">Animation:</div>
         <div class="anim-box" id="styleList">
             <div class="anim-item active" data-geo="plane" data-anim="360s">360 Spin</div>
-            <div class="anim-item" data-geo="plane" data-anim="thick">Thick 360 Spin</div>
-            <div class="anim-item" data-geo="plane" data-anim="180s">180 Spin</div>
-            <div class="anim-item" data-geo="cube" data-anim="cube_h">Horiz. Rotating Cube</div>
-            <div class="anim-item" data-geo="cube" data-anim="cube_d">Diag. Rotating Cube</div>
+            <div class="anim-item" data-geo="cube" data-anim="cube_h">Rotating Cube</div>
             <div class="anim-item" data-geo="sphere" data-anim="sphere">Rotating Sphere</div>
             <div class="anim-item" data-geo="torus" data-anim="donut">Rotating Donut</div>
         </div>
-        <button class="btn-scroll" onclick="document.getElementById('dl-zone').scrollIntoView({behavior:'smooth'})">Scroll for Download</button>
     </div>
 
     <div class="col-custom">
-        <div style="font-weight:bold;">Customize:</div>
-        <div class="control-group"><label>Size</label><input type="range" id="sizeRange" min="50" max="250" value="150"></div>
-        <div class="control-group"><label>Speed</label><input type="range" id="speedRange" min="1" max="50" value="15"></div>
-        <div class="cube-section" id="cubeSettings" style="display:none;">
-            <label>Cube Mode:</label>
-            <select id="cubeMode"><option value="6">6 Sides Mode</option><option value="4">4 Sides Mode</option></select>
-            <div class="sides-grid" id="sidesGrid"></div>
-        </div>
+        <label style="font-weight:bold; color:#333;">Speed</label>
+        <input type="range" id="speedRange" min="1" max="50" value="15" style="width:100%;">
     </div>
 </div>
 
-<div class="bottom-area" id="dl-zone">
-    <h2>Download Your Animation</h2>
+<div id="dl-zone">
     <button class="btn-final-download" id="captureBtn">Download Gif</button>
 </div>
 
 <script>
     let scene, camera, renderer, mesh, globalTexture = null;
-    let materials = [], activeGeo = 'plane', activeAnim = '360s', uploadSideIndex = -1;
+    let activeAnim = '360s', activeGeo = 'plane';
 
     function init() {
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
         camera.position.z = 10;
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
-        renderer.setSize(320, 320);
+        renderer.setSize(300, 300);
         document.getElementById('canvas-box').appendChild(renderer.domElement);
-        scene.add(new THREE.AmbientLight(0xffffff, 1.4));
+        scene.add(new THREE.AmbientLight(0xffffff, 1.5));
         updateMesh('plane');
-        buildCubeTabs('6');
         animate();
     }
 
     function updateMesh(type) {
         if(mesh) scene.remove(mesh);
-        let geo; materials = [];
-        let mode = document.getElementById('cubeMode').value;
+        let geo;
         if(type === 'plane') geo = new THREE.BoxGeometry(5, 5, 0.1);
         else if(type === 'cube') geo = new THREE.BoxGeometry(4.5, 4.5, 4.5);
-        else if(type === 'sphere') geo = new THREE.SphereGeometry(3, 64, 64);
-        else if(type === 'torus') geo = new THREE.TorusGeometry(2, 0.6, 20, 100);
+        else if(type === 'sphere') geo = new THREE.SphereGeometry(3, 32, 32);
+        else if(type === 'torus') geo = new THREE.TorusGeometry(2, 0.6, 12, 48);
 
-        for(let i=0; i<6; i++) {
-            let mat = new THREE.MeshStandardMaterial({ color: 0xcccccc, transparent: true, side: THREE.DoubleSide });
-            if(type === 'cube' && mode === '4' && (i === 2 || i === 3)) mat.opacity = 0; 
-            materials.push(mat);
-        }
-        mesh = new THREE.Mesh(geo, materials);
+        let mats = [];
+        for(let i=0; i<6; i++) mats.push(new THREE.MeshStandardMaterial({ color: 0xcccccc, transparent: true, side: THREE.DoubleSide }));
+        mesh = new THREE.Mesh(geo, mats);
         scene.add(mesh);
-        if(globalTexture) applyTextureToMesh(globalTexture);
-    }
-
-    function applyTextureToMesh(tex) {
-        materials.forEach((m, i) => {
-            let mode = document.getElementById('cubeMode').value;
-            if(!(activeGeo === 'cube' && mode === '4' && (i === 2 || i === 3))) {
-                m.map = tex; m.color.set(0xffffff);
-            }
-            m.needsUpdate = true;
-        });
+        if(globalTexture) mesh.material.forEach(m => { m.map = globalTexture; m.color.set(0xffffff); m.needsUpdate = true; });
     }
 
     function animate() {
         requestAnimationFrame(animate);
         let spd = parseFloat(document.getElementById('speedRange').value) / 600;
-        if(mesh) {
-            if(activeAnim === '360s') mesh.rotation.y += spd;
-            else if(activeAnim === 'cube_h') { mesh.rotation.y += spd; mesh.rotation.x = 0.2; }
-            else if(activeAnim === 'cube_d') { mesh.rotation.x += spd; mesh.rotation.y += spd; }
-            else mesh.rotation.y += spd;
-        }
+        if(mesh) { mesh.rotation.y += spd; if(activeAnim.includes('cube')) mesh.rotation.x = 0.2; }
         renderer.render(scene, camera);
     }
-
-    function buildCubeTabs(count) {
-        let grid = document.getElementById('sidesGrid'); grid.innerHTML = '';
-        let faces = (count === '6') ? [4,0,5,1,2,3] : [4,0,5,1];
-        faces.forEach((f, i) => {
-            let btn = document.createElement('div'); btn.className = 'side-tab'; btn.innerText = 'Slide '+(i+1);
-            btn.onclick = () => { uploadSideIndex = f; document.getElementById('imageInput').click(); };
-            grid.appendChild(btn);
-        });
-    }
-
-    window.triggerMainUpload = () => { uploadSideIndex = -1; document.getElementById('imageInput').click(); };
 
     document.getElementById('imageInput').onchange = (e) => {
         let reader = new FileReader();
         reader.onload = (ev) => {
             new THREE.TextureLoader().load(ev.target.result, (tex) => {
                 globalTexture = tex;
-                if(uploadSideIndex !== -1) {
-                    materials[uploadSideIndex].map = tex; materials[uploadSideIndex].color.set(0xffffff); materials[uploadSideIndex].needsUpdate = true;
-                } else { applyTextureToMesh(tex); }
+                mesh.material.forEach(m => { m.map = tex; m.color.set(0xffffff); m.needsUpdate = true; });
             });
         };
         reader.readAsDataURL(e.target.files[0]);
@@ -170,45 +103,53 @@
     document.querySelectorAll('.anim-item').forEach(el => {
         el.onclick = function() {
             document.querySelectorAll('.anim-item').forEach(i => i.classList.remove('active'));
-            this.classList.add('active'); 
+            this.classList.add('active');
             activeAnim = this.dataset.anim;
             if(this.dataset.geo !== activeGeo) { activeGeo = this.dataset.geo; updateMesh(activeGeo); }
-            document.getElementById('cubeSettings').style.display = (activeGeo === 'cube' ? 'block' : 'none');
         };
     });
 
-    document.getElementById('cubeMode').onchange = (e) => { buildCubeTabs(e.target.value); updateMesh('cube'); };
-    document.getElementById('sizeRange').oninput = (e) => { let s = e.target.value/130; if(mesh) mesh.scale.set(s,s,s); };
-
-    // --- DOWNLOAD LOGIC ---
+    // --- FIX DOWNLOAD LOGIC ---
     document.getElementById('captureBtn').onclick = function() {
-        if (typeof gifshot === 'undefined') {
-            alert("Sabar! Library load nahi hui. Net check karke refresh karein.");
-            return;
-        }
         const btn = this;
         btn.disabled = true;
         let frames = [];
         let count = 0;
-        let captureTimer = setInterval(() => {
+        const total = 12; // Bohat kam frames taake stuck na ho
+
+        let timer = setInterval(() => {
             count++;
-            btn.innerText = "Capturing: " + Math.round((count/15)*100) + "%";
+            btn.innerText = "Capturing: " + Math.round((count/total)*100) + "%";
             renderer.render(scene, camera);
             frames.push(renderer.domElement.toDataURL('image/png'));
-            if(count >= 15) {
-                clearInterval(captureTimer);
-                btn.innerText = "Finalizing...";
-                gifshot.createGIF({
-                    images: frames, gifWidth: 250, gifHeight: 250, interval: 0.1, numWorkers: 0
-                }, function(obj) {
-                    if(!obj.error) {
-                        const a = document.createElement('a'); a.href = obj.image; a.download = '3d-logo.gif'; a.click();
-                    }
-                    btn.innerText = "Download Gif";
-                    btn.disabled = false;
-                });
+
+            if(count >= total) {
+                clearInterval(timer);
+                btn.innerText = "Finalizing... (Wait 5 sec)";
+                
+                // Sabar: Browser ko thora waqt dein data process karne ka
+                setTimeout(() => {
+                    gifshot.createGIF({
+                        images: frames,
+                        gifWidth: 200, // Resolution choti rakhi hai stability ke liye
+                        gifHeight: 200,
+                        interval: 0.1,
+                        numWorkers: 0 // Local/Incognito ke liye 0 best hai
+                    }, function(obj) {
+                        if(!obj.error) {
+                            const a = document.createElement('a');
+                            a.href = obj.image;
+                            a.download = '3d-logo.gif';
+                            a.click();
+                            btn.innerText = "Done!";
+                        } else {
+                            alert("Error: " + obj.errorMsg);
+                        }
+                        setTimeout(() => { btn.innerText = "Download Gif"; btn.disabled = false; }, 2000);
+                    });
+                }, 500);
             }
-        }, 150);
+        }, 200);
     };
 
     init();
