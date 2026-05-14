@@ -241,23 +241,44 @@
     document.getElementById('cubeMode').onchange = (e) => { buildCubeTabs(e.target.value); updateMesh('cube'); };
     document.getElementById('sizeRange').oninput = (e) => { let s = e.target.value/130; if(mesh) mesh.scale.set(s,s,s); };
 
-    // --- GIF GENERATION ---
+    // --- GIF GENERATION (FIXED & CLEAN) ---
     document.getElementById('captureBtn').onclick = function() {
-        this.innerText = "Encoding... (Please Wait)";
-        this.disabled = true;
+        const btn = this;
+        btn.innerText = "Processing... (Please Wait)";
+        btn.disabled = true;
+
         let frames = [];
         let count = 0;
+        const totalFrames = 30; // Processing speed behtar karne ke liye frames 30 rakhe hain
+
         let timer = setInterval(() => {
+            renderer.render(scene, camera); 
             frames.push(renderer.domElement.toDataURL('image/png'));
             count++;
-            if(count >= 40) {
+
+            if(count >= totalFrames) {
                 clearInterval(timer);
-                gifshot.createGIF({ images: frames, interval: 0.1, gifWidth: 320, gifHeight: 320 }, (obj) => {
+                
+                gifshot.createGIF({ 
+                    images: frames, 
+                    interval: 0.1, 
+                    gifWidth: 320, 
+                    gifHeight: 320,
+                    numWorkers: 2 
+                }, (obj) => {
                     if(!obj.error) {
-                        let a = document.createElement('a'); a.href = obj.image; a.download = '3d-logo.gif'; a.click();
+                        let a = document.createElement('a');
+                        a.href = obj.image;
+                        a.download = '3d-logo.gif';
+                        document.body.appendChild(a); 
+                        a.click();
+                        document.body.removeChild(a);
+                    } else {
+                        alert("GIF Error: " + obj.errorMsg);
                     }
-                    this.innerText = "Download Gif";
-                    this.disabled = false;
+                    // Button ko wapis normal halat mein laane ke liye
+                    btn.innerText = "Download Gif";
+                    btn.disabled = false;
                 });
             }
         }, 100);
