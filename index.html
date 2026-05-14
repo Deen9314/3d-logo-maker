@@ -241,50 +241,61 @@
     document.getElementById('cubeMode').onchange = (e) => { buildCubeTabs(e.target.value); updateMesh('cube'); };
     document.getElementById('sizeRange').oninput = (e) => { let s = e.target.value/130; if(mesh) mesh.scale.set(s,s,s); };
 
-    // --- GIF GENERATION (LOCAL FILE COMPATIBLE) ---
+    // --- GIF GENERATION (FINAL GITHUB FIX) ---
     document.getElementById('captureBtn').onclick = function() {
         const btn = this;
-        btn.innerText = "Encoding... Please Wait";
+        btn.innerText = "Encoding... (Please Wait)";
         btn.disabled = true;
 
         let frames = [];
         let count = 0;
-        const totalFrames = 25; // Frames mazeed kam kiye hain takay stuck na ho
+        const totalFrames = 20; // Frames mazeed kam kiye hain takay GitHub par crash na ho
 
-        let timer = setInterval(() => {
-            renderer.render(scene, camera); 
-            frames.push(renderer.domElement.toDataURL('image/png'));
-            count++;
-
-            if(count >= totalFrames) {
-                clearInterval(timer);
+        function captureNextFrame() {
+            if (count < totalFrames) {
+                // Pehle render karein phir capture
+                renderer.render(scene, camera);
+                const frameData = renderer.domElement.toDataURL('image/png');
                 
-                // Gifshot settings ko mazeed simple kiya hai
-                gifshot.createGIF({ 
-                    images: frames, 
-                    interval: 0.1, 
-                    gifWidth: 320, 
-                    gifHeight: 320,
-                    numWorkers: 0 // Workers OFF (Local file ke liye zaroori hai)
-                }, (obj) => {
-                    if(!obj.error) {
-                        const link = document.createElement('a');
-                        link.href = obj.image;
-                        link.download = '3d-logo.gif';
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                        console.log("Download started!");
-                    } else {
-                        console.error("Gifshot Error:", obj.errorMsg);
-                        alert("Processing Error: " + obj.errorMsg);
-                    }
-                    // Button reset
-                    btn.innerText = "Download Gif";
-                    btn.disabled = false;
-                });
+                // Check karein ke frame khali to nahi
+                if (frameData && frameData.length > 1000) {
+                    frames.push(frameData);
+                    count++;
+                }
+
+                // Agla frame thora ruk kar capture karein (Memory manage karne ke liye)
+                setTimeout(captureNextFrame, 150);
+            } else {
+                createTheGif();
             }
-        }, 120); // Interval thora barha diya hai takay memory load kam ho
+        }
+
+        function createTheGif() {
+            gifshot.createGIF({
+                images: frames,
+                interval: 0.1,
+                gifWidth: 300, // Size thora chota kiya takay processing fast ho
+                gifHeight: 300,
+                numWorkers: 2, // GitHub live ke liye 2 best hai
+                sampleInterval: 10
+            }, function(obj) {
+                if (!obj.error) {
+                    const link = document.createElement('a');
+                    link.href = obj.image;
+                    link.download = '3d-logo.gif';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    console.error("GIF Error:", obj.errorMsg);
+                    alert("Processing Error: Browser memory full. Please refresh.");
+                }
+                btn.innerText = "Download Gif";
+                btn.disabled = false;
+            });
+        }
+
+        captureNextFrame(); // Start the loop
     };
     init();
 </script>
