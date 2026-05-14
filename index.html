@@ -8,54 +8,54 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gifshot/0.4.5/gifshot.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #059669; --bg: #0b1120; --card-bg: #f8fafc; --text-dark: #1e293b; }
+        :root { --primary: #059669; --bg: #0b1120; --panel-bg: #f8fafc; --text-dark: #1e293b; }
         body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: white; overflow-x: hidden; }
-        header { text-align: center; padding: 30px 0 10px; }
-        header h1 { font-size: 40px; margin: 0; font-weight: 400; color: #fff; }
+        header { text-align: center; padding: 25px 0 10px; }
+        header h1 { font-size: 40px; margin: 0; font-weight: 300; }
 
-        /* 3-Column Horizontal Layout (As per your 3d.jpg) */
+        /* Main Tool Layout (3 Columns Horizontal) */
         .main-tool-card {
-            max-width: 1250px; margin: 20px auto; background: #fff; border-radius: 15px;
-            display: grid; grid-template-columns: 360px 1fr 340px; gap: 20px; padding: 25px;
-            color: var(--text-dark); box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            max-width: 1200px; margin: 0 auto; background: #fff; border-radius: 12px;
+            display: grid; grid-template-columns: 350px 1fr 320px; gap: 15px; padding: 25px;
+            color: var(--text-dark); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        /* Column 1: Preview */
+        /* Col 1: Preview */
         .col-preview { display: flex; flex-direction: column; align-items: center; border-right: 1px solid #eee; padding-right: 15px; }
         #canvas-box { 
             width: 320px; height: 320px; background: #fff; border: 1px solid #ddd;
             background-image: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f0f0f0 75%), linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
             background-size: 20px 20px;
         }
-        .btn-upload-main { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 18px; }
+        .btn-upload-main { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 16px; }
 
-        /* Column 2: Animation List */
-        .col-list { display: flex; flex-direction: column; }
-        .anim-box { height: 380px; overflow-y: auto; border: 1px solid #ddd; background: white; border-radius: 6px; margin-top: 5px; }
-        .anim-item { padding: 12px 15px; border-bottom: 1px solid #f1f5f9; cursor: pointer; font-size: 14px; color: #444; transition: 0.1s; }
+        /* Col 2: Animation List */
+        .col-list { display: flex; flex-direction: column; padding: 0 10px; }
+        .anim-box { height: 380px; overflow-y: auto; border: 1px solid #ddd; background: white; border-radius: 5px; margin-top: 5px; }
+        .anim-item { padding: 12px 15px; border-bottom: 1px solid #f1f5f9; cursor: pointer; font-size: 14px; transition: 0.1s; }
         .anim-item:hover { background: #f8fafc; }
-        .anim-item.active { background: #e2e8f0; font-weight: bold; color: #059669; border-left: 5px solid #059669; }
-        .btn-scroll { background: #1e3a8a; color: white; border: none; padding: 12px; border-radius: 8px; margin-top: 15px; cursor: pointer; font-weight: bold; width: 100%; }
+        .anim-item.active { background: #e2e8f0; font-weight: bold; color: var(--primary); border-left: 4px solid var(--primary); }
+        .btn-scroll { background: #1e3a8a; color: white; border: none; padding: 12px; border-radius: 6px; margin-top: 15px; cursor: pointer; font-weight: bold; }
 
-        /* Column 3: Customize */
-        .col-custom { display: flex; flex-direction: column; gap: 18px; padding-left: 15px; border-left: 1px solid #eee; }
+        /* Col 3: Customize */
+        .col-custom { display: flex; flex-direction: column; gap: 15px; padding-left: 15px; border-left: 1px solid #eee; }
         .control-group { display: flex; flex-direction: column; }
-        .control-group label { font-weight: bold; font-size: 14px; margin-bottom: 5px; color: #333; }
-        input[type="range"] { width: 100%; cursor: pointer; accent-color: #059669; }
+        .control-group label { font-weight: bold; font-size: 14px; margin-bottom: 5px; }
+        input[type="range"] { width: 100%; cursor: pointer; accent-color: var(--primary); }
 
-        /* Cube Side Management */
-        .cube-section { background: #f1f5f9; padding: 12px; border-radius: 10px; border: 1px solid #cbd5e1; margin-top: 5px; }
-        .sides-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 10px; }
-        .side-tab { background: #fff; border: 1px solid #ddd; padding: 10px 2px; font-size: 11px; text-align: center; cursor: pointer; border-radius: 5px; font-weight: bold; color: #555; }
-        .side-tab:hover { border-color: #059669; color: #059669; }
+        /* Cube Sides */
+        .cube-settings { background: #f1f5f9; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; }
+        .sides-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 8px; }
+        .side-tab { background: white; border: 1px solid #ddd; padding: 10px 2px; font-size: 11px; text-align: center; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        .side-tab:hover { border-color: var(--primary); color: var(--primary); }
 
-        /* Bottom Section for Ads */
-        .bottom-area { max-width: 1100px; margin: 60px auto; text-align: center; }
+        /* Ads & Download Section */
+        .bottom-section { max-width: 1100px; margin: 60px auto; text-align: center; }
         .ad-space { width: 100%; height: 250px; background: #111; margin: 20px 0; border: 1px solid #333; display: flex; align-items: center; justify-content: center; color: #444; font-size: 20px; border-radius: 10px; }
-        .btn-final-download { background: #27ae60; color: white; border: none; padding: 22px 90px; font-size: 26px; font-weight: bold; border-radius: 12px; cursor: pointer; margin-bottom: 80px; box-shadow: 0 15px 30px rgba(0,0,0,0.4); transition: 0.3s; }
+        .btn-final-download { background: #27ae60; color: white; border: none; padding: 22px 80px; font-size: 26px; font-weight: bold; border-radius: 12px; cursor: pointer; margin-bottom: 100px; transition: 0.3s; }
         .btn-final-download:disabled { background: #95a5a6; cursor: wait; }
 
-        @media (max-width: 950px) { .main-tool-card { grid-template-columns: 1fr; } }
+        @media (max-width: 1000px) { .main-tool-card { grid-template-columns: 1fr; } .col-preview, .col-custom { border: none; padding: 0; } }
     </style>
 </head>
 <body>
@@ -69,13 +69,10 @@
         <div id="canvas-box"></div>
         <input type="file" id="imageInput" hidden accept="image/*">
         <button class="btn-upload-main" onclick="triggerMainUpload()">Upload Image</button>
-        <div style="margin-top:15px; font-size:13px; color:#666;">
-            <input type="checkbox" id="transCheck" checked> Transparent Background
-        </div>
     </div>
 
     <div class="col-list">
-        <div style="font-weight:bold;">Animation: <span style="color:blue; cursor:help;">?</span></div>
+        <div style="font-weight:bold;">Animation:</div>
         <div class="anim-box" id="styleList">
             <div class="anim-item active" data-geo="plane" data-anim="360s">360 Spin</div>
             <div class="anim-item" data-geo="plane" data-anim="thick">Thick 360 Spin</div>
@@ -90,6 +87,7 @@
             <div class="anim-item" data-geo="plane" data-anim="hflip">Horizontal Flip</div>
             <div class="anim-item" data-geo="plane" data-anim="bounce">DVD Bounce</div>
             <div class="anim-item" data-geo="plane" data-anim="pulse">Pulse Spin</div>
+            <div class="anim-item" data-geo="plane" data-anim="fidget">Fidget Spinner</div>
             <div class="anim-item" data-geo="plane" data-anim="rock">Rocking</div>
             <div class="anim-item" data-geo="plane" data-anim="zoom">Zoom In-Out</div>
             <div class="anim-item" data-geo="plane" data-anim="spiral">Spiral Spin</div>
@@ -109,8 +107,8 @@
             <input type="range" id="speedRange" min="1" max="50" value="15">
         </div>
 
-        <div class="cube-section" id="cubeSettings" style="display:none;">
-            <label>Cube Mode:</label>
+        <div class="cube-settings" id="cubeSettings" style="display:none;">
+            <label>Cube Sides (4 or 6):</label>
             <select id="cubeMode">
                 <option value="6">6 Sides Mode</option>
                 <option value="4">4 Sides Mode</option>
@@ -120,9 +118,9 @@
     </div>
 </div>
 
-<div class="bottom-area" id="dl-zone">
+<div class="bottom-section" id="dl-zone">
     <h2>Download Your Animation</h2>
-    <div class="ad-placeholder">ADSTERRA / GOOGLE ADS SLOT</div>
+    <div class="ad-space">ADSTERRA / GOOGLE ADS SLOT</div>
     <button class="btn-final-download" id="captureBtn">Download Gif</button>
 </div>
 
@@ -135,13 +133,12 @@
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
         camera.position.z = 10;
-        // CRITICAL FIX: preserveDrawingBuffer must be TRUE to capture frames for GIF
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
         renderer.setSize(320, 320);
         holder.appendChild(renderer.domElement);
 
         scene.add(new THREE.AmbientLight(0xffffff, 1.4));
-        let l = new THREE.DirectionalLight(0xffffff, 0.4); l.position.set(0, 0, 10); scene.add(l);
+        let light = new THREE.DirectionalLight(0xffffff, 0.6); light.position.set(5, 5, 10); scene.add(light);
 
         updateMesh('plane');
         buildCubeTabs('6');
@@ -155,7 +152,7 @@
         if(type === 'plane') geo = new THREE.BoxGeometry(5, 5, 0.1);
         else if(type === 'cube') geo = new THREE.BoxGeometry(4.5, 4.5, 4.5);
         else if(type === 'sphere') geo = new THREE.SphereGeometry(3, 64, 64);
-        else if(type === 'torus') geo = new THREE.TorusGeometry(2, 0.6, 20, 100);
+        else if(type === 'torus') geo = new THREE.TorusGeometry(2, 0.8, 20, 100);
 
         for(let i=0; i<6; i++) {
             let mat = new THREE.MeshStandardMaterial({ color: 0xcccccc, transparent: true, side: THREE.DoubleSide });
@@ -164,10 +161,10 @@
         }
         mesh = new THREE.Mesh(geo, materials);
         scene.add(mesh);
-        if(globalTexture) applyTextureToMesh(globalTexture);
+        if(globalTexture) applyTexture(globalTexture);
     }
 
-    function applyTextureToMesh(tex) {
+    function applyTexture(tex) {
         materials.forEach((m, i) => {
             let mode = document.getElementById('cubeMode').value;
             if(!(activeGeo === 'cube' && mode === '4' && (i === 2 || i === 3))) {
@@ -194,6 +191,7 @@
                 case 'heart': let s = 1 + Math.sin(time*6)*0.1; mesh.scale.set(s,s,s); break;
                 case 'vflip': mesh.rotation.x += spd; break;
                 case 'hflip': mesh.rotation.y += spd; break;
+                case 'flipDiag': mesh.rotation.x += spd; mesh.rotation.y += spd; break;
                 case 'pulse': let p = 1 + Math.sin(time*4)*0.15; mesh.scale.set(p,p,p); break;
                 case 'rock': mesh.rotation.y = Math.sin(time)*0.8; break;
                 case 'zoom': camera.position.z = 10 + Math.sin(time)*3; break;
@@ -222,7 +220,7 @@
                 globalTexture = tex;
                 if(uploadSideIndex !== -1) {
                     materials[uploadSideIndex].map = tex; materials[uploadSideIndex].color.set(0xffffff); materials[uploadSideIndex].needsUpdate = true;
-                } else { applyTextureToMesh(tex); }
+                } else { applyTexture(tex); }
             });
         };
         reader.readAsDataURL(e.target.files[0]);
@@ -231,8 +229,7 @@
     document.querySelectorAll('.anim-item').forEach(el => {
         el.onclick = function() {
             document.querySelectorAll('.anim-item').forEach(i => i.classList.remove('active'));
-            this.classList.add('active'); 
-            activeAnim = this.dataset.anim;
+            this.classList.add('active'); activeAnim = this.dataset.anim;
             if(this.dataset.geo !== activeGeo) { activeGeo = this.dataset.geo; updateMesh(activeGeo); }
             document.getElementById('cubeSettings').style.display = (activeGeo === 'cube' ? 'block' : 'none');
         };
@@ -241,62 +238,64 @@
     document.getElementById('cubeMode').onchange = (e) => { buildCubeTabs(e.target.value); updateMesh('cube'); };
     document.getElementById('sizeRange').oninput = (e) => { let s = e.target.value/130; if(mesh) mesh.scale.set(s,s,s); };
 
-    // --- GIF GENERATION (FINAL GITHUB FIX) ---
+    // --- GIF GENERATION (GITHUB PAGES LIVE FIX) ---
     document.getElementById('captureBtn').onclick = function() {
-        const btn = this;
-        btn.innerText = "Encoding... (Please Wait)";
-        btn.disabled = true;
+        // Step 1: Check if library is actually loaded
+        if (typeof gifshot === 'undefined') {
+            alert("Error: Gifshot library load nahi ho saki. Please page refresh karein ya internet check karein.");
+            return;
+        }
 
+        const btn = this;
+        btn.disabled = true;
         let frames = [];
         let count = 0;
-        const totalFrames = 20; // Frames mazeed kam kiye hain takay GitHub par crash na ho
+        const totalFrames = 18; // Speed aur stability ke liye 18 frames best hain
 
-        function captureNextFrame() {
-            if (count < totalFrames) {
-                // Pehle render karein phir capture
-                renderer.render(scene, camera);
-                const frameData = renderer.domElement.toDataURL('image/png');
+        let captureInterval = setInterval(() => {
+            count++;
+            btn.innerText = "Capturing: " + Math.round((count/totalFrames)*100) + "%";
+            
+            // Step 2: Render and capture frame
+            renderer.render(scene, camera);
+            frames.push(renderer.domElement.toDataURL('image/png'));
+
+            if (count >= totalFrames) {
+                clearInterval(captureInterval);
+                btn.innerText = "Finalizing GIF... Please wait";
                 
-                // Check karein ke frame khali to nahi
-                if (frameData && frameData.length > 1000) {
-                    frames.push(frameData);
-                    count++;
-                }
-
-                // Agla frame thora ruk kar capture karein (Memory manage karne ke liye)
-                setTimeout(captureNextFrame, 150);
-            } else {
-                createTheGif();
+                // Step 3: Create GIF with GitHub-safe settings
+                gifshot.createGIF({
+                    images: frames,
+                    gifWidth: 300, 
+                    gifHeight: 300,
+                    interval: 0.1,
+                    numWorkers: 0, // Workers 0 rakhne se GitHub par hang nahi hoga
+                    sampleInterval: 10
+                }, function(obj) {
+                    if (!obj.error) {
+                        const link = document.createElement('a');
+                        link.href = obj.image;
+                        link.download = '3d-logo.gif';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        btn.innerText = "Download Success!";
+                    } else {
+                        console.error("Gifshot Error:", obj.errorMsg);
+                        alert("Error: GIF nahi ban saki. Wajah: " + obj.errorMsg);
+                    }
+                    
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        btn.innerText = "Download Gif";
+                        btn.disabled = false;
+                    }, 2000);
+                });
             }
-        }
-
-        function createTheGif() {
-            gifshot.createGIF({
-                images: frames,
-                interval: 0.1,
-                gifWidth: 300, // Size thora chota kiya takay processing fast ho
-                gifHeight: 300,
-                numWorkers: 2, // GitHub live ke liye 2 best hai
-                sampleInterval: 10
-            }, function(obj) {
-                if (!obj.error) {
-                    const link = document.createElement('a');
-                    link.href = obj.image;
-                    link.download = '3d-logo.gif';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                } else {
-                    console.error("GIF Error:", obj.errorMsg);
-                    alert("Processing Error: Browser memory full. Please refresh.");
-                }
-                btn.innerText = "Download Gif";
-                btn.disabled = false;
-            });
-        }
-
-        captureNextFrame(); // Start the loop
+        }, 150); 
     };
+
     init();
 </script>
 </body>
