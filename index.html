@@ -241,15 +241,15 @@
     document.getElementById('cubeMode').onchange = (e) => { buildCubeTabs(e.target.value); updateMesh('cube'); };
     document.getElementById('sizeRange').oninput = (e) => { let s = e.target.value/130; if(mesh) mesh.scale.set(s,s,s); };
 
-    // --- GIF GENERATION (FIXED & CLEAN) ---
+    // --- GIF GENERATION (LOCAL FILE COMPATIBLE) ---
     document.getElementById('captureBtn').onclick = function() {
         const btn = this;
-        btn.innerText = "Processing... (Please Wait)";
+        btn.innerText = "Encoding... Please Wait";
         btn.disabled = true;
 
         let frames = [];
         let count = 0;
-        const totalFrames = 30; // Processing speed behtar karne ke liye frames 30 rakhe hain
+        const totalFrames = 25; // Frames mazeed kam kiye hain takay stuck na ho
 
         let timer = setInterval(() => {
             renderer.render(scene, camera); 
@@ -259,29 +259,32 @@
             if(count >= totalFrames) {
                 clearInterval(timer);
                 
+                // Gifshot settings ko mazeed simple kiya hai
                 gifshot.createGIF({ 
                     images: frames, 
                     interval: 0.1, 
                     gifWidth: 320, 
                     gifHeight: 320,
-                    numWorkers: 2 
+                    numWorkers: 0 // Workers OFF (Local file ke liye zaroori hai)
                 }, (obj) => {
                     if(!obj.error) {
-                        let a = document.createElement('a');
-                        a.href = obj.image;
-                        a.download = '3d-logo.gif';
-                        document.body.appendChild(a); 
-                        a.click();
-                        document.body.removeChild(a);
+                        const link = document.createElement('a');
+                        link.href = obj.image;
+                        link.download = '3d-logo.gif';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        console.log("Download started!");
                     } else {
-                        alert("GIF Error: " + obj.errorMsg);
+                        console.error("Gifshot Error:", obj.errorMsg);
+                        alert("Processing Error: " + obj.errorMsg);
                     }
-                    // Button ko wapis normal halat mein laane ke liye
+                    // Button reset
                     btn.innerText = "Download Gif";
                     btn.disabled = false;
                 });
             }
-        }, 100);
+        }, 120); // Interval thora barha diya hai takay memory load kam ho
     };
 
     init();
